@@ -11,7 +11,7 @@ class Bayer(models.Model):
 
 class Game(models.Model):
     title = models.CharField(max_length=100)
-    cost = models.DecimalField(max_digits=10, decimal_places=5)
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
     size = models.DecimalField(max_digits=10, decimal_places=5)
     description = models.TextField()
     age_limited = models.BooleanField(default=False)
