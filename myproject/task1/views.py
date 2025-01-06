@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .forms import UserRegister
 from django.http import HttpResponse
-from .models import Bayer, Game
+from .models import Bayer, Game, News
+from django.core.paginator import Paginator
 
 # Create your views here.
 def func_template(request):
@@ -13,7 +14,8 @@ def func_template(request):
         'title': title,
         'text_1': text_1,
         'text_2': text_2,
-        'text_3': text_3
+        'text_3': text_3,
+        'news': news_function,
     }
     return render(request,'main_page.html', context)
 
@@ -27,7 +29,7 @@ def func_template_first(request):   #отображение записей из 
 def func_template_second(request):
     title = 'Корзина'
     context = {
-        'title': title
+        'title': title,
     }
     return render(request, 'second_page.html', context)
 
@@ -90,3 +92,13 @@ def sign_up_by_html(request):                  #главная стpаница
             return render(request,'registration_page.html',contex)
 
     return render(request,'registration_page.html')
+
+def news_function(request):
+    post = News.objects.all()                   #получаем все новости
+    paginator = Paginator(post, 3)      #создаем пагинатор
+    page_number = request.GET.get('page')       #получаем номер страницы, на котрую переходит пользователь
+    news = paginator.get_page(page_number)      #получаем новости для текущей страницы
+    context = {
+        'news': news,
+    }
+    return render(request, 'news.html', context) #передаем контекст в шаблон
